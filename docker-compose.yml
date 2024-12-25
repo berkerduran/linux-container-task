@@ -1,0 +1,23 @@
+
+
+services:
+  app:
+    build: .
+    image: python-http-server
+    ports:
+      - "8080:8000"  # Uygulama servisi 8000 portunu dinleyecek
+    networks:
+      - webnet
+
+  proxy:
+    image: nginx:latest
+    ports:
+      - "8081:80"  # Nginx servisi dışarıya 8081 portunu açacak
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Nginx konfigürasyonunu yüklüyoruz
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge  # İki servis arasındaki iletişim için ağ yapılandırması
